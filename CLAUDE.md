@@ -110,7 +110,11 @@ portada se genera a partir del título; no hace falta imagen.
 
 ## Despliegue
 
-Vercel, desde `main`. `vercel.json` fija las cabeceras de seguridad y el
-cacheado. El sitemap y las URLs canónicas salen de `astro.config.mjs`, que lee
-`VERCEL_PROJECT_PRODUCTION_URL` en build, así que un cambio de dominio no
-requiere tocar código.
+Vercel, desde `main`. Producción: **https://gargabriel.vercel.app**.
+`vercel.json` fija las cabeceras de seguridad y el cacheado.
+
+El dominio canónico está **fijado a mano** en `astro.config.mjs`, no leído de
+`VERCEL_PROJECT_PRODUCTION_URL`: esa variable devuelve el dominio autogenerado
+con sufijo de equipo, no el alias corto que publicamos, y un canonical
+apuntando al dominio equivocado reparte el posicionamiento entre dos URLs.
+Para un dominio propio, define la variable de entorno `SITE_URL` en Vercel.
