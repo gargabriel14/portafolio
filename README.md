@@ -2,7 +2,7 @@
 
 Portafolio personal de una sola página. Estático, sin backend, desplegado en Vercel.
 
-**Producción:** https://gabrielgarcia.vercel.app
+**Producción:** https://gargabriel.vercel.app
 
 ---
 

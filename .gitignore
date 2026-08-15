@@ -33,3 +33,6 @@ npm-debug.log*
 
 # Temporales de trabajo
 *.tmp.mjs
+
+.vercel
+.env*

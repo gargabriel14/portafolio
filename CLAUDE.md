@@ -44,13 +44,13 @@ npm run verify       # el gate completo: tipos, formato, build, e2e, CSP
 
 `npm run verify` es lo que corre el CI. Si pasa en local, pasa en CI.
 
-| Comando | Qué hace |
-| --- | --- |
-| `npm run check` | `astro check` — tipos de TS y de las plantillas |
-| `npm run format:check` | Prettier en modo verificación (es un gate de CI) |
-| `npm run test:e2e` | Build + Playwright (escritorio y móvil) |
-| `npm run check:csp` | Comprueba que `dist/` cumple la CSP de `vercel.json` |
-| `npm run og` | Regenera `public/og.png` |
+| Comando                | Qué hace                                             |
+| ---------------------- | ---------------------------------------------------- |
+| `npm run check`        | `astro check` — tipos de TS y de las plantillas      |
+| `npm run format:check` | Prettier en modo verificación (es un gate de CI)     |
+| `npm run test:e2e`     | Build + Playwright (escritorio y móvil)              |
+| `npm run check:csp`    | Comprueba que `dist/` cumple la CSP de `vercel.json` |
+| `npm run og`           | Regenera `public/og.png`                             |
 
 ## Restricciones técnicas que cuestan tiempo si se ignoran
 

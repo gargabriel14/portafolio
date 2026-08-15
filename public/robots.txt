@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Portafolio personal: todo el contenido es público y se quiere indexar.
-Sitemap: https://gabrielgarcia.vercel.app/sitemap-index.xml
+Sitemap: https://gargabriel.vercel.app/sitemap-index.xml

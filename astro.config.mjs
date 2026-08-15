@@ -4,15 +4,18 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 /**
- * El dominio canónico. Vercel expone VERCEL_PROJECT_PRODUCTION_URL en build,
- * así que el sitemap y las URLs canónicas salen correctas sin tocar código
- * cuando cambie el dominio. SITE_URL permite forzarlo a mano.
+ * El dominio canónico, del que salen el sitemap, los <link rel="canonical">
+ * y las URLs absolutas de Open Graph.
+ *
+ * Está fijado a mano y NO se lee de VERCEL_PROJECT_PRODUCTION_URL a
+ * propósito: esa variable devuelve el dominio autogenerado con sufijo
+ * (portafolio-gabriel-garcia-gabriel-garcia.vercel.app), no el alias
+ * corto que realmente publicamos. Un canonical apuntando al dominio
+ * equivocado divide el posicionamiento entre dos URLs.
+ *
+ * SITE_URL lo sobrescribe cuando se conecte un dominio propio.
  */
-const site =
-  process.env.SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://gabrielgarcia.vercel.app');
+const site = process.env.SITE_URL ?? 'https://gargabriel.vercel.app';
 
 export default defineConfig({
   site,
