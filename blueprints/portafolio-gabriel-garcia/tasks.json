@@ -1,0 +1,196 @@
+{
+  "project": "portafolio-gabriel-garcia",
+  "generated": "2026-08-15",
+  "status": "complete",
+  "note": "Todas las tareas estan en done: el proyecto se construyo, verifico y desplego en la misma sesion que emitio este bundle.",
+  "epics": [
+    {
+      "id": "e1",
+      "name": "Cimientos y contenido"
+    },
+    {
+      "id": "e2",
+      "name": "Secciones e interaccion"
+    },
+    {
+      "id": "e3",
+      "name": "Movimiento y 3D"
+    },
+    {
+      "id": "e4",
+      "name": "SEO y accesibilidad"
+    },
+    {
+      "id": "e5",
+      "name": "Seguridad y despliegue"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t01",
+      "epic": "e1",
+      "title": "Scaffold Astro 7 y dependencias con pins verificados",
+      "status": "done",
+      "verify": "npm run build",
+      "depends_on": [],
+      "acceptance": "Ver blueprint.md seccion 9, paso 1."
+    },
+    {
+      "id": "t02",
+      "epic": "e1",
+      "title": "Tokens Tailwind 4 en @theme y fuentes self-hosted",
+      "status": "done",
+      "verify": "ls dist/_astro/*.woff2 | wc -l  # espera 18",
+      "depends_on": [
+        "t01"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 2."
+    },
+    {
+      "id": "t03",
+      "epic": "e1",
+      "title": "profile.ts como fuente unica de verdad",
+      "status": "done",
+      "verify": "npx astro check  # espera 0 errores",
+      "depends_on": [
+        "t01"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 3."
+    },
+    {
+      "id": "t04",
+      "epic": "e1",
+      "title": "Coleccion tipada de proyectos con validacion Zod",
+      "status": "done",
+      "verify": "npm run build  # falla si el frontmatter incumple",
+      "depends_on": [
+        "t03"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 4."
+    },
+    {
+      "id": "t05",
+      "epic": "e2",
+      "title": "Layout base: head, SEO, Open Graph y JSON-LD Person",
+      "status": "done",
+      "verify": "npx playwright test -g \"metadatos sociales\"",
+      "depends_on": [
+        "t03"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 5."
+    },
+    {
+      "id": "t06",
+      "epic": "e2",
+      "title": "Seis secciones: hero, sobre mi, skills, proyectos, trayectoria, contacto",
+      "status": "done",
+      "verify": "npx playwright test -g \"las cinco secciones existen\"",
+      "depends_on": [
+        "t05"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 6."
+    },
+    {
+      "id": "t07",
+      "epic": "e3",
+      "title": "Fondo WebGL con carga diferida y tres guardas",
+      "status": "done",
+      "verify": "npx playwright test -g \"carga, tiene un solo h1\"",
+      "depends_on": [
+        "t06"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 7."
+    },
+    {
+      "id": "t08",
+      "epic": "e3",
+      "title": "Capa de movimiento: GSAP, ScrollTrigger, Lenis, reduced-motion",
+      "status": "done",
+      "verify": "npx playwright test -g \"axe no reporta\"",
+      "depends_on": [
+        "t07"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 8."
+    },
+    {
+      "id": "t09",
+      "epic": "e2",
+      "title": "Filtro de proyectos por categoria",
+      "status": "done",
+      "verify": "npx playwright test -g \"el filtro reduce la parrilla\"",
+      "depends_on": [
+        "t06"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 9."
+    },
+    {
+      "id": "t10",
+      "epic": "e2",
+      "title": "Contacto sin backend con copiar al portapapeles",
+      "status": "done",
+      "verify": "npx playwright test -g \"enlaces externos\"",
+      "depends_on": [
+        "t06"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 10."
+    },
+    {
+      "id": "t11",
+      "epic": "e2",
+      "title": "Pagina 404 con estado 404 real y noindex",
+      "status": "done",
+      "verify": "npx playwright test -g \"la pagina de error existe\"",
+      "depends_on": [
+        "t05"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 11."
+    },
+    {
+      "id": "t12",
+      "epic": "e4",
+      "title": "Superficie SEO: sitemap, robots, llms.txt",
+      "status": "done",
+      "verify": "curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/llms.txt  # espera 200",
+      "depends_on": [
+        "t05"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 12."
+    },
+    {
+      "id": "t13",
+      "epic": "e4",
+      "title": "Accesibilidad y responsive verificados",
+      "status": "done",
+      "verify": "npx playwright test  # espera 20 passed",
+      "depends_on": [
+        "t08",
+        "t09",
+        "t10",
+        "t11"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 13."
+    },
+    {
+      "id": "t14",
+      "epic": "e5",
+      "title": "Cabeceras de seguridad y verificador de CSP en CI",
+      "status": "done",
+      "verify": "node scripts/check-csp.mjs  # espera exit 0",
+      "depends_on": [
+        "t13"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 14."
+    },
+    {
+      "id": "t15",
+      "epic": "e5",
+      "title": "Despliegue en Vercel con alias de produccion",
+      "status": "done",
+      "verify": "curl -sI https://gargabriel.vercel.app | grep -c Content-Security-Policy  # espera 1",
+      "depends_on": [
+        "t14"
+      ],
+      "acceptance": "Ver blueprint.md seccion 9, paso 15."
+    }
+  ]
+}

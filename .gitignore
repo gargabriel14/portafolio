@@ -36,3 +36,8 @@ npm-debug.log*
 
 .vercel
 .env*
+
+# Grafo de conocimiento: se versiona el grafo y el informe (sirven para
+# retomar el proyecto sin releer el repo entero), pero no los internos.
+graphify-out/.graphify_*
+graphify-out/cost.json
