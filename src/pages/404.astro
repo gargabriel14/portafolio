@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { seo } from '../data/profile';
+---
+
+<Base title={`404 — Página no encontrada · ${seo.shortTitle}`} noindex>
+  <section
+    class="flex min-h-svh flex-col items-center justify-center px-5 text-center"
+  >
+    <p class="font-display text-[.65rem] font-bold tracking-[.4em] text-cyan">
+      [ <span class="anim-blink">●</span> RUTA NO ENCONTRADA ]
+    </p>
+
+    <h1
+      class="mt-6 font-display text-[clamp(4rem,18vw,11rem)] leading-none font-black text-white"
+      style="text-shadow:0 0 40px rgb(0 240 255/.4)"
+    >
+      404
+    </h1>
+
+    <p class="mt-6 max-w-md text-lg text-muted">
+      Esta página no existe. Puede que el enlace esté roto o que la haya movido
+      de sitio.
+    </p>
+
+    <div class="mt-9 flex flex-wrap justify-center gap-4">
+      <a href="/" class="btn">VOLVER AL INICIO</a>
+      <a href="/#contacto" class="btn btn-ghost">CONTACTAR</a>
+    </div>
+  </section>
+</Base>

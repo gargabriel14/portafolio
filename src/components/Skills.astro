@@ -1,0 +1,92 @@
+---
+import { skillGroups, proficiency } from '../data/profile';
+
+const accentClass = {
+  cyan: 'text-cyan border-cyan/30',
+  magenta: 'text-magenta border-magenta/30',
+  violet: 'text-violet border-violet/30',
+} as const;
+---
+
+<section id="skills" class="relative px-5 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="sec-head" data-reveal>
+      <span class="sec-num">// 02</span>
+      <h2>STACK TÉCNICO</h2>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="grid gap-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <!-- Grupos de tecnologías -->
+      <div class="space-y-7">
+        {
+          skillGroups.map((group) => (
+            <div data-reveal>
+              <h3
+                class:list={[
+                  'mb-3.5 border-l-2 pl-3 font-display text-[.68rem] font-bold tracking-[.26em]',
+                  accentClass[group.accent],
+                ]}
+              >
+                {group.title.toUpperCase()}
+              </h3>
+              <ul class="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <li class="chip">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Barras de nivel -->
+      <div data-reveal class="lg:sticky lg:top-24">
+        <div class="panel clip-card p-6 sm:p-7">
+          <h3
+            class="font-display text-[.68rem] font-bold tracking-[.26em] text-white"
+          >
+            NIVEL POR ÁREA
+          </h3>
+          <p class="mt-2 text-sm leading-relaxed text-dim">
+            Autoevaluación sobre trabajo real, no una métrica medida. Está aquí
+            para que sepas dónde puedo ir solo y dónde voy a preguntar.
+          </p>
+
+          <ul class="mt-7 space-y-6">
+            {
+              proficiency.map((p) => (
+                <li>
+                  <div class="mb-2 flex items-baseline justify-between gap-3">
+                    <span class="font-display text-[.66rem] font-bold tracking-[.16em] text-text">
+                      {p.label.toUpperCase()}
+                    </span>
+                    <span class="font-display text-xs font-bold text-cyan tabular-nums">
+                      {p.value}%
+                    </span>
+                  </div>
+                  <div
+                    class="relative h-2.5 overflow-hidden border border-cyan/20 bg-cyan/5"
+                    role="img"
+                    aria-label={`${p.label}: ${p.value} por ciento`}
+                  >
+                    <div
+                      class="h-full w-0 transition-[width] duration-1000 ease-out"
+                      data-bar={p.value}
+                      style="background:linear-gradient(90deg,var(--color-cyan),var(--color-magenta));box-shadow:0 0 16px rgb(0 240 255/.5)"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="pointer-events-none absolute inset-0"
+                      style="background:repeating-linear-gradient(90deg,transparent 0 9px,rgb(4 1 15/.55) 9px 11px)"
+                    />
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

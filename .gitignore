@@ -1,0 +1,35 @@
+# Dependencias
+node_modules/
+
+# Build
+dist/
+.astro/
+.vercel/
+
+# Tests
+test-results/
+playwright-report/
+playwright/.cache/
+blob-report/
+
+# Capturas de revisión visual (se regeneran, no son fuente)
+shots/
+
+# Escaneos de seguridad (pueden contener detalles de hallazgos)
+strix_runs/
+
+# Entorno — nunca commitear secretos
+.env
+.env.*
+!.env.example
+
+# Sistema y editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.idea/
+*.swp
+
+# Temporales de trabajo
+*.tmp.mjs

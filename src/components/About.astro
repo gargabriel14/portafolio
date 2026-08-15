@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/gabriel-garcia.png';
+import { identity, intro, availability, education } from '../data/profile';
+---
+
+{
+  /* overflow-hidden no es decorativo: el anillo de abajo es una caja
+    CUADRADA que rota, así que su bounding box crece hasta √2 veces su
+    lado y arrastraba scroll horizontal en móvil que aparecía y
+    desaparecía según el ángulo. El círculo visible cabe de sobra; lo
+    único que se recorta son las esquinas transparentes. */
+}
+<section id="sobre-mi" class="relative overflow-hidden px-5 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="sec-head" data-reveal>
+      <span class="sec-num">// 01</span>
+      <h2>SOBRE MÍ</h2>
+      <span class="sec-line"></span>
+    </div>
+
+    <div class="grid items-start gap-12 lg:grid-cols-[320px_1fr] lg:gap-16">
+      <!-- Retrato -->
+      <div
+        data-reveal
+        class="relative mx-auto w-full max-w-[250px] sm:max-w-[280px] lg:max-w-none"
+      >
+        <div
+          aria-hidden="true"
+          class="anim-spin-slow absolute -inset-3 rounded-full border border-dashed border-cyan/25 sm:-inset-4"
+        >
+        </div>
+        <div class="clip-card panel relative overflow-hidden p-1.5">
+          <Image
+            src={portrait}
+            alt={`Retrato de ${identity.fullName}`}
+            width={560}
+            height={560}
+            widths={[280, 560]}
+            sizes="(max-width: 1024px) 280px, 320px"
+            format="webp"
+            quality={82}
+            loading="eager"
+            class="clip-card w-full"
+          />
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0"
+            style="background:linear-gradient(160deg,rgb(0 240 255/.12),transparent 45%,rgb(255 47 214/.14))"
+          >
+          </div>
+        </div>
+
+        <div
+          class="clip-corner-sm mt-5 border border-cyan/30 bg-cyan/5 px-4 py-3 text-center"
+        >
+          <p
+            class="font-display text-[.6rem] font-bold tracking-[.25em] text-cyan"
+          >
+            <span class="anim-blink">●</span>
+            {availability.status.toUpperCase()}
+          </p>
+          <p class="mt-1 text-sm text-muted">{availability.detail}</p>
+        </div>
+      </div>
+
+      <!-- Texto -->
+      <div class="space-y-8">
+        {
+          /* Los {' '} son necesarios: Astro colapsa el espacio en blanco entre
+            una expresión y un elemento, y sin ellos sale "Alcedo,desarrollador". */
+        }
+        <p data-reveal class="text-xl leading-relaxed text-text sm:text-2xl">
+          Soy <span class="font-bold text-white">{identity.fullName}</span>,{
+            ' '
+          }
+          <span class="font-bold text-cyan">{identity.role.toLowerCase()}</span
+          >{' '}
+          afincado en {identity.location}.
+        </p>
+
+        <p data-reveal class="text-lg leading-relaxed text-muted">
+          {intro.detail}
+        </p>
+
+        <p data-reveal class="text-lg leading-relaxed text-muted">
+          Busco <span class="text-white"
+            >{availability.seeking.toLowerCase()}</span
+          >. Trabajo bien en remoto y con autonomía: investigo la solución, la
+          implemento y la dejo documentada.
+        </p>
+
+        <!-- Formación e idiomas -->
+        <div data-reveal class="grid gap-6 pt-2 sm:grid-cols-2">
+          <div class="clip-corner-sm border border-violet/30 bg-violet/5 p-5">
+            <h3
+              class="font-display text-[.65rem] font-bold tracking-[.28em] text-violet"
+            >
+              FORMACIÓN
+            </h3>
+            <ul class="mt-4 space-y-3">
+              {
+                education.items.map((e) => (
+                  <li class="flex items-start gap-2.5">
+                    <span
+                      class:list={[
+                        'mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45',
+                        e.status === 'done' ? 'bg-cyan' : 'bg-dim',
+                      ]}
+                    />
+                    <span>
+                      <span class="block text-sm leading-snug text-text">
+                        {e.title}
+                      </span>
+                      <span class="text-xs text-dim">{e.detail}</span>
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div class="clip-corner-sm border border-cyan/25 bg-cyan/5 p-5">
+            <h3
+              class="font-display text-[.65rem] font-bold tracking-[.28em] text-cyan"
+            >
+              IDIOMAS
+            </h3>
+            <ul class="mt-4 space-y-3">
+              {
+                education.languages.map((l) => (
+                  <li>
+                    <span class="block text-sm font-semibold text-text">
+                      {l.name}
+                    </span>
+                    <span class="text-xs leading-snug text-dim">{l.level}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

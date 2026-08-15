@@ -1,0 +1,50 @@
+{
+  "name": "portafolio-gabriel-garcia",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Portafolio personal de Gabriel José García Alcedo — desarrollador web full-stack.",
+  "author": "Gabriel José García Alcedo <gargabriel1412@gmail.com>",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "sharp": true
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "og": "node scripts/generate-og.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:e2e": "astro build && playwright test",
+    "check:csp": "node scripts/check-csp.mjs",
+    "verify": "npm run check && npm run format:check && npm run test:e2e && npm run check:csp"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "@fontsource/orbitron": "5.3.0",
+    "@fontsource/rajdhani": "5.3.0",
+    "astro": "7.2.2",
+    "gsap": "3.15.0",
+    "lenis": "1.3.26",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/three": "0.185.4",
+    "prettier": "3.9.6",
+    "prettier-plugin-astro": "0.14.1",
+    "sharp": "0.35.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3"
+  }
+}

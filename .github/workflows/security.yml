@@ -1,0 +1,116 @@
+name: Seguridad
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Lunes 06:00 UTC. Las dependencias se vuelven vulnerables solas, sin
+    # que nadie toque el repositorio, así que hace falta un barrido periódico.
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  # ── Lo que de verdad muerde en un sitio estático ──────────────────
+  # Sin backend no hay inyección, ni autenticación que romper, ni IDOR.
+  # El riesgo real está en las dependencias, en un secreto commiteado
+  # por descuido y en unas cabeceras mal puestas.
+  dependencias:
+    name: Dependencias y secretos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Auditoría de dependencias
+        run: npm audit --audit-level=moderate
+
+      - name: Buscar secretos en el historial
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  cabeceras:
+    name: Cabeceras de seguridad
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # vercel.json declara la CSP, pero una CSP que el sitio incumple no
+      # protege: el navegador la aplica y la página se rompe. Este paso
+      # comprueba que lo construido encaja con lo declarado.
+      - name: Verificar que el build cumple su propia CSP
+        run: node scripts/check-csp.mjs
+
+  strix:
+    name: Pentest con Strix
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Sin las credenciales del modelo el paso no puede correr. En lugar de
+    # fallar el PR de quien no las tenga configuradas, se salta y lo dice.
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # necesario para resolver el alcance del diff
+
+      - name: Comprobar credenciales
+        id: creds
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: |
+          if [ -z "$LLM_API_KEY" ]; then
+            echo "disponible=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Falta el secreto LLM_API_KEY; se omite el escaneo de Strix."
+          else
+            echo "disponible=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Instalar Strix
+        if: steps.creds.outputs.disponible == 'true'
+        run: curl -sSL https://strix.ai/install | bash
+
+      - name: Escaneo de seguridad
+        if: steps.creds.outputs.disponible == 'true'
+        env:
+          STRIX_LLM: ${{ secrets.STRIX_LLM }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: strix -n -t ./ --scan-mode quick --max-budget 10
+
+      # Un escaneo que agota el presupuesto sale con código 0 pero deja
+      # status "stopped". Sin esta comprobación el gate falla en abierto.
+      - name: Exigir que el escaneo termine
+        if: steps.creds.outputs.disponible == 'true'
+        run: |
+          run_json=$(ls -t strix_runs/*/run.json | head -1)
+          status=$(jq -r .status "$run_json")
+          if [ "$status" != "completed" ]; then
+            echo "Strix terminó en estado '$status' — el escaneo no completó (probablemente presupuesto agotado). Sube --max-budget." >&2
+            exit 1
+          fi
+
+      - name: Subir SARIF a code scanning
+        if: always() && steps.creds.outputs.disponible == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: strix_runs

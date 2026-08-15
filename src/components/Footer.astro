@@ -1,0 +1,52 @@
+---
+import { identity, socials } from '../data/profile';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative border-t border-cyan/12 px-5 py-12">
+  <div
+    class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-7 sm:flex-row"
+  >
+    <div class="text-center sm:text-left">
+      <p class="font-display text-sm font-black tracking-[.2em] text-white">
+        <span class="text-cyan">◢</span>
+        {identity.brand.prefix}<span class="text-magenta"
+          >{identity.brand.suffix}</span
+        >
+      </p>
+      <p class="mt-2 text-sm text-dim">
+        © {year}
+        {identity.fullName}
+      </p>
+      {
+        /* text-dim a plena opacidad: con /75 el contraste caía a 4.08:1,
+          por debajo del 4.5:1 que exige WCAG AA para texto pequeño. */
+      }
+      <p class="mt-0.5 text-xs text-dim">
+        Astro · Tailwind · Three.js · GSAP — desplegado en Vercel
+      </p>
+    </div>
+
+    <ul class="flex gap-3">
+      {
+        socials.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              target={s.href.startsWith('http') ? '_blank' : undefined}
+              rel={
+                s.href.startsWith('http') ? 'noopener noreferrer' : undefined
+              }
+              class="clip-corner-sm grid h-10 w-10 place-items-center border border-cyan/25 text-dim transition-all duration-300 hover:border-cyan hover:text-cyan"
+              aria-label={s.label}
+            >
+              <Icon name={s.icon} size={16} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>

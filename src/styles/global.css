@@ -1,0 +1,439 @@
+/* ─────────────────────────────────────────────────────────────
+   Fuentes self-hosted. Se empaquetan desde node_modules: cero
+   peticiones a Google Fonts, y por eso la CSP puede prohibir
+   dominios externos sin romper la tipografía.
+   ───────────────────────────────────────────────────────────── */
+@import '@fontsource/orbitron/400.css';
+@import '@fontsource/orbitron/700.css';
+@import '@fontsource/orbitron/900.css';
+@import '@fontsource/rajdhani/300.css';
+@import '@fontsource/rajdhani/400.css';
+@import '@fontsource/rajdhani/500.css';
+@import '@fontsource/rajdhani/600.css';
+@import '@fontsource/rajdhani/700.css';
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────────────────────
+   TOKENS · Tailwind 4 se configura en CSS, no en JS.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --color-ink: #04010f;
+  --color-ink-2: #070218;
+  --color-ink-3: #0b0530;
+
+  --color-cyan: #00f0ff;
+  --color-magenta: #ff2fd6;
+  --color-violet: #8b5cf6;
+
+  --color-text: #e8f4ff;
+  --color-muted: #9fb8d8;
+  --color-dim: #7d94b8;
+
+  --font-display: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+
+  --tracking-brand: 0.22em;
+  --tracking-wider2: 0.35em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --cyan: var(--color-cyan);
+    --magenta: var(--color-magenta);
+    --violet: var(--color-violet);
+    --ink: var(--color-ink);
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis toma el control del scroll; sin esto pelea con scroll-behavior. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-weight: 500;
+    overflow-x: hidden;
+    min-height: 100svh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-magenta);
+    color: #fff;
+  }
+
+  /* Foco visible y consistente: requisito de accesibilidad, no adorno. */
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--color-cyan), var(--color-magenta));
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPONENTES
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  /* Corte diagonal reutilizable, la firma visual del diseño. */
+  .clip-corner {
+    clip-path: polygon(
+      14px 0,
+      100% 0,
+      100% calc(100% - 14px),
+      calc(100% - 14px) 100%,
+      0 100%,
+      0 14px
+    );
+  }
+  .clip-corner-sm {
+    clip-path: polygon(
+      8px 0,
+      100% 0,
+      100% calc(100% - 8px),
+      calc(100% - 8px) 100%,
+      0 100%,
+      0 8px
+    );
+  }
+  .clip-card {
+    clip-path: polygon(
+      0 0,
+      calc(100% - 20px) 0,
+      100% 20px,
+      100% 100%,
+      20px 100%,
+      0 calc(100% - 20px)
+    );
+  }
+
+  .panel {
+    background: linear-gradient(
+      160deg,
+      rgb(13 10 44 / 0.72),
+      rgb(24 6 56 / 0.62)
+    );
+    border: 1px solid rgb(0 240 255 / 0.16);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Botón primario */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0.95rem 1.9rem;
+    font-family: var(--font-display);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--color-cyan);
+    border: 1px solid rgb(0 240 255 / 0.55);
+    background: linear-gradient(
+      90deg,
+      rgb(0 240 255 / 0.1),
+      rgb(255 47 214 / 0.1)
+    );
+    transition:
+      color 0.3s,
+      background-color 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+    clip-path: polygon(
+      14px 0,
+      100% 0,
+      100% calc(100% - 14px),
+      calc(100% - 14px) 100%,
+      0 100%,
+      0 14px
+    );
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: -80%;
+    width: 50%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.32),
+      transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.55s var(--ease-smooth);
+  }
+  .btn:hover {
+    color: var(--color-ink);
+    background: var(--color-cyan);
+    box-shadow: 0 0 34px rgb(0 240 255 / 0.6);
+  }
+  .btn:hover::after {
+    left: 130%;
+  }
+
+  .btn-ghost {
+    color: var(--color-magenta);
+    border-color: rgb(255 47 214 / 0.55);
+  }
+  .btn-ghost:hover {
+    color: var(--color-ink);
+    background: var(--color-magenta);
+    box-shadow: 0 0 34px rgb(255 47 214 / 0.55);
+  }
+
+  /* Etiqueta de tecnología */
+  .chip {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 0.42rem 0.85rem;
+    color: #c4b5fd;
+    border: 1px solid rgb(139 92 246 / 0.45);
+    background: rgb(139 92 246 / 0.06);
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+    clip-path: polygon(
+      8px 0,
+      100% 0,
+      100% calc(100% - 8px),
+      calc(100% - 8px) 100%,
+      0 100%,
+      0 8px
+    );
+  }
+  .chip:hover {
+    color: #fff;
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 14px rgb(0 240 255 / 0.35);
+    transform: translateY(-3px);
+  }
+
+  /* Cabecera de sección */
+  /* flex-wrap no es cosmético: a 360px el título, el número de sección y
+     el contador no caben en una línea, y sin envolver empujaban 9px de
+     scroll horizontal. Al envolver, el contador cae a su propia línea. */
+  .sec-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (min-width: 640px) {
+    .sec-head {
+      gap: 1rem;
+    }
+  }
+  .sec-head h2 {
+    min-width: 0;
+  }
+  .sec-num {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--color-magenta);
+    text-shadow: 0 0 12px rgb(255 47 214 / 0.7);
+    white-space: nowrap;
+  }
+  .sec-head h2 {
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    font-size: clamp(1.25rem, 3.4vw, 2.1rem);
+    color: #fff;
+    text-shadow: 0 0 20px rgb(0 240 255 / 0.45);
+  }
+  .sec-line {
+    flex: 1 1 1.5rem;
+    height: 1px;
+    min-width: 1.5rem;
+    background: linear-gradient(90deg, var(--color-cyan), transparent);
+    box-shadow: 0 0 10px rgb(0 240 255 / 0.6);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-cyan),
+      var(--color-magenta)
+    );
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease-smooth);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   UTILIDADES Y ANIMACIONES
+   ───────────────────────────────────────────────────────────── */
+@utility text-glow-cyan {
+  text-shadow: 0 0 18px rgb(0 240 255 / 0.65);
+}
+@utility text-glow-magenta {
+  text-shadow: 0 0 18px rgb(255 47 214 / 0.65);
+}
+
+/* Estado inicial de los reveals. GSAP los anima; si GSAP no llega
+   (JS desactivado, error de red) el fallback los hace visibles. */
+[data-reveal] {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.no-js [data-reveal],
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(9px);
+    opacity: 0.35;
+  }
+}
+@keyframes grid-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+@keyframes node-pulse {
+  50% {
+    box-shadow: 0 0 26px var(--color-magenta);
+    border-color: var(--color-magenta);
+  }
+}
+
+.anim-spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+.anim-spin-rev {
+  animation: spin-slow 32s linear infinite reverse;
+}
+.anim-float {
+  animation: float-y 5.5s ease-in-out infinite;
+}
+.anim-blink {
+  animation: blink 1.2s steps(2) infinite;
+}
+.anim-cue {
+  animation: scroll-cue 1.8s ease-in-out infinite;
+}
+.anim-grid {
+  animation: grid-pulse 6s ease-in-out infinite;
+}
+.anim-node {
+  animation: node-pulse 2.4s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACCESIBILIDAD · quien pide menos movimiento recibe menos
+   movimiento. No es un modo degradado: el sitio queda completo.
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

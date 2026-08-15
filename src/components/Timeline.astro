@@ -1,0 +1,87 @@
+---
+import { timeline } from '../data/profile';
+
+const accent = {
+  cyan: { text: 'text-cyan', border: 'border-cyan', bg: 'bg-cyan' },
+  magenta: { text: 'text-magenta', border: 'border-magenta', bg: 'bg-magenta' },
+  violet: { text: 'text-violet', border: 'border-violet', bg: 'bg-violet' },
+  white: { text: 'text-white', border: 'border-white', bg: 'bg-white' },
+} as const;
+---
+
+<section id="trayectoria" class="relative px-5 py-24 sm:py-28">
+  <div class="mx-auto max-w-4xl">
+    <div class="sec-head" data-reveal>
+      <span class="sec-num">// 04</span>
+      <h2>TRAYECTORIA</h2>
+      <span class="sec-line"></span>
+    </div>
+
+    <ol class="relative space-y-10 pl-8 sm:pl-10">
+      <!-- Raíl vertical -->
+      <div
+        aria-hidden="true"
+        class="absolute top-2 bottom-2 left-[7px] w-[2px] sm:left-[9px]"
+        style="background:linear-gradient(180deg,var(--color-cyan),var(--color-magenta),var(--color-violet));box-shadow:0 0 14px rgb(0 240 255/.45)"
+      >
+      </div>
+
+      {
+        timeline.map((item) => {
+          const a = accent[item.accent];
+          return (
+            <li data-reveal class="relative">
+              <span
+                aria-hidden="true"
+                class:list={[
+                  'absolute top-2 -left-8 h-3.5 w-3.5 rotate-45 border-2 bg-ink sm:-left-10',
+                  a.border,
+                  item.current && 'anim-node',
+                ]}
+                style="box-shadow:0 0 16px currentColor"
+              />
+
+              <article class="clip-card panel p-5 transition-all duration-300 hover:border-cyan/50 sm:p-6">
+                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <p
+                    class:list={[
+                      'font-display text-xs font-bold tracking-[.24em]',
+                      a.text,
+                    ]}
+                  >
+                    {item.period.toUpperCase()}
+                  </p>
+                  {item.current && (
+                    <span class="border border-cyan/50 px-2 py-0.5 font-display text-[.5rem] font-bold tracking-[.18em] text-cyan">
+                      EN CURSO
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="mt-2 font-display text-lg leading-tight font-bold text-white">
+                  {item.title}
+                </h3>
+                <p class="mt-1 text-sm text-muted">
+                  <span class="font-semibold text-text">{item.org}</span>
+                  <span class="text-dim"> · {item.place}</span>
+                </p>
+
+                <ul class="mt-4 space-y-2">
+                  {item.bullets.map((b) => (
+                    <li class="flex gap-2.5 text-sm leading-relaxed text-muted">
+                      <span
+                        aria-hidden="true"
+                        class:list={['mt-2 h-1 w-1 shrink-0 rotate-45', a.bg]}
+                      />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</section>

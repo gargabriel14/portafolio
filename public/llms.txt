@@ -1,0 +1,81 @@
+# Gabriel José García Alcedo — Desarrollador Web Full-Stack
+
+> Portafolio personal de Gabriel José García Alcedo, desarrollador web
+> full-stack afincado en Getafe / Madrid, España. Trabaja con WordPress,
+> JavaScript, TypeScript, PHP, React y SEO técnico desde 2020. Disponible
+> de forma inmediata para proyectos freelance, contratos por proyecto y
+> empleo remoto a jornada completa.
+
+## Datos de contacto
+
+- Email: gargabriel1412@gmail.com
+- Teléfono: +34 614 947 192
+- LinkedIn: https://www.linkedin.com/in/gabriel-jose-garcia-alcedo-7a8837335
+- GitHub: https://github.com/gargabriel14
+- Ubicación: Getafe / Madrid, España
+- Idiomas: español (nativo), inglés (intermedio, más sólido por escrito)
+
+## Perfil
+
+Desarrollador web freelance con experiencia práctica desde 2020 creando,
+manteniendo y optimizando sitios web y productos digitales. Combina desarrollo
+frontend y full-stack con administración web, SEO técnico y automatización.
+Se incorpora a proyectos y bases de código existentes con autonomía.
+
+## Experiencia
+
+- **Freelance Web Developer — El Adoquín Times** (noviembre 2020 — actualidad,
+  remoto). Desarrollo, mantenimiento y evolución de la plataforma digital de un
+  medio de comunicación. WordPress, PHP, JavaScript, Elementor, ACF, SEO técnico,
+  Google Search Console, GA4, hosting, dominios, DNS y despliegues.
+- **Web Developer & Community Manager — GS Creaciones Digitales** (junio 2020 —
+  septiembre 2024, Maracay, Venezuela). Desarrollo y mantenimiento web, más
+  gestión de redes sociales y contenido.
+- **Excel Optimization Assistant — proyectos freelance.** Optimización de hojas
+  de cálculo, procesamiento y estructuración de datos, macros y VBA.
+
+## Proyectos
+
+- **El Adoquín Times** — https://eladoquintimes.com — plataforma de un medio
+  digital, en producción, con trabajo continuado desde 2020.
+- **App de El Adoquín Times** — aplicación móvil en desarrollo (JavaScript,
+  React, React Native). No está publicada.
+- **Proyecto web de cliente** — pendiente de lanzamiento oficial; el cliente no
+  se identifica hasta que publique.
+- **Bots de WhatsApp y Telegram** — automatizaciones e integraciones con APIs.
+
+## Tecnologías
+
+Frontend: HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Angular, Astro,
+responsive design.
+Backend: Node.js, MERN, PHP, MySQL, SQL, REST APIs.
+CMS: WordPress, Elementor, themes y child themes, plugins, ACF, WooCommerce,
+Shopify.
+SEO y analítica: SEO técnico, SEO On-Page, Core Web Vitals, Google Search
+Console, Google Analytics 4.
+Despliegue: hosting, dominios, DNS, Vercel, Git, GitHub.
+Otros: React Native, Excel avanzado, macros y VBA, automatizaciones y bots,
+Figma, Photoshop, Illustrator.
+
+## Formación
+
+- Bachiller: completado.
+- FP en Administración de Sistemas Informáticos en Red (ASIR): previsto, aún no
+  iniciado.
+- Sin certificaciones profesionales por el momento.
+
+## Disponibilidad
+
+Inmediata, jornada completa, ocho horas diarias, modalidad remota preferente.
+Interesado en freelance, contratos por proyecto, contractor y empleo remoto
+full-time en España, Europa, LATAM e internacional.
+
+## Nota sobre exactitud
+
+Este sitio no publica métricas de tráfico, número de clientes ni premios porque
+no hay cifras verificadas que respalden esas afirmaciones. Los proyectos en
+desarrollo se identifican como tales.
+
+## Páginas
+
+- / — portafolio completo: perfil, stack técnico, proyectos, trayectoria y contacto.

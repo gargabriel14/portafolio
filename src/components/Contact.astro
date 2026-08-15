@@ -1,0 +1,114 @@
+---
+import { identity, socials, availability } from '../data/profile';
+import Icon from './Icon.astro';
+---
+
+<section id="contacto" class="relative px-5 py-24 sm:py-32">
+  <div class="mx-auto max-w-4xl text-center">
+    <div class="sec-head justify-center" data-reveal>
+      <span class="sec-num">// 05</span>
+      <h2>CONTACTO</h2>
+    </div>
+
+    <h3
+      data-reveal
+      class="font-display text-[clamp(1.9rem,6.5vw,4.2rem)] leading-none font-black tracking-[.06em] text-white"
+    >
+      ¿HABLAMOS?
+    </h3>
+
+    <p
+      data-reveal
+      class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted"
+    >
+      {availability.detail}. Abierto a {availability.seeking.toLowerCase()}.
+      Escríbeme y te respondo.
+    </p>
+
+    <!-- Correo destacado -->
+    <div
+      data-reveal
+      class="mt-10 flex flex-wrap items-center justify-center gap-3"
+    >
+      <a
+        href={`mailto:${identity.email}`}
+        class="btn !px-8 !py-4 !text-sm"
+        data-magnetic
+      >
+        <Icon name="mail" size={18} />
+        {identity.email}
+      </a>
+      <button
+        type="button"
+        class="clip-corner-sm grid h-[54px] w-[54px] place-items-center border border-cyan/40 text-cyan transition-all duration-300 hover:bg-cyan hover:text-ink"
+        data-copy={identity.email}
+        aria-label="Copiar dirección de correo"
+      >
+        <Icon name="copy" size={18} />
+      </button>
+    </div>
+
+    <p data-reveal class="mt-5 text-sm text-dim">
+      O por teléfono:{' '}
+      <a href={`tel:${identity.phoneHref}`} class="link-underline text-cyan"
+        >{identity.phone}</a
+      >
+    </p>
+
+    <!-- Redes -->
+    <ul data-reveal class="mt-12 flex flex-wrap justify-center gap-4">
+      {
+        socials.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              target={s.href.startsWith('http') ? '_blank' : undefined}
+              rel={
+                s.href.startsWith('http') ? 'noopener noreferrer' : undefined
+              }
+              class="social-btn clip-corner-sm grid h-14 w-14 place-items-center border border-cyan/35 text-cyan transition-all duration-300"
+              aria-label={s.label}
+              title={s.label}
+            >
+              <Icon name={s.icon} size={21} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div
+      data-reveal
+      class="clip-corner-sm mx-auto mt-14 max-w-lg border border-violet/25 bg-violet/5 px-6 py-5"
+    >
+      <p
+        class="font-display text-[.6rem] font-bold tracking-[.26em] text-violet"
+      >
+        UBICACIÓN
+      </p>
+      <p class="mt-2 text-muted">{identity.location}</p>
+      <p class="mt-1 text-sm text-dim">
+        Trabajo en remoto para España, Europa, LATAM e internacional.
+      </p>
+    </div>
+  </div>
+
+  <!-- Aviso accesible para el resultado de copiar -->
+  <p id="copy-status" role="status" aria-live="polite" class="sr-only"></p>
+</section>
+
+<style>
+  .social-btn:hover {
+    background: var(--color-cyan);
+    color: var(--color-ink);
+    box-shadow: 0 0 26px rgb(0 240 255 / 0.55);
+    transform: translateY(-5px);
+  }
+</style>
+
+{
+  /* El botón de copiar vive en src/scripts/main.ts por la misma razón que
+    el filtro de proyectos: un <script> de componente se inlinaría y
+    forzaría 'unsafe-inline' en la CSP. Sin formulario ni backend no hay
+    endpoint que atacar ni spam que filtrar. */
+}

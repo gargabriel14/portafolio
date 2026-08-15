@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+test-results/
+playwright-report/
+shots/
+strix_runs/
+package-lock.json
+public/og.png
+blueprints/

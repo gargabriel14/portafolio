@@ -1,0 +1,144 @@
+---
+/**
+ * Portada generativa. En vez de capturas de pantalla desparejas (o de
+ * enseñar el sitio de un cliente que aún no ha lanzado), cada proyecto
+ * recibe una portada derivada de su propio título: misma entrada,
+ * misma imagen, siempre. Cero peso de red — es SVG inline.
+ */
+interface Props {
+  title: string;
+  seedOffset?: number;
+}
+const { title, seedOffset = 0 } = Astro.props;
+
+// Hash estable (djb2). Determinista entre builds y entre máquinas.
+let hash = 5381;
+for (let i = 0; i < title.length; i++) {
+  hash = ((hash << 5) + hash + title.charCodeAt(i)) >>> 0;
+}
+hash = (hash + seedOffset * 2654435761) >>> 0;
+
+const rand = (n: number, salt: number) => ((hash >>> salt) % n) + 1;
+
+const initial = title.trim().charAt(0).toUpperCase();
+const rotation = rand(40, 3) - 20;
+const cx = 30 + rand(40, 7);
+const cy = 25 + rand(50, 11);
+const ringR = 18 + rand(16, 5);
+const barCount = 3 + rand(3, 13);
+const uid = `pc${hash.toString(36)}`;
+---
+
+<svg
+  viewBox="0 0 400 225"
+  class="h-full w-full"
+  role="img"
+  aria-label={`Portada decorativa del proyecto ${title}`}
+  preserveAspectRatio="xMidYMid slice"
+>
+  <defs>
+    <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0630"></stop>
+      <stop offset="100%" stop-color="#22064a"></stop>
+    </linearGradient>
+    <linearGradient id={`${uid}-stroke`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f0ff"></stop>
+      <stop offset="100%" stop-color="#ff2fd6"></stop>
+    </linearGradient>
+    <pattern
+      id={`${uid}-grid`}
+      width="25"
+      height="25"
+      patternUnits="userSpaceOnUse"
+    >
+      <path
+        d="M25 0H0V25"
+        fill="none"
+        stroke="#00f0ff"
+        stroke-opacity="0.16"
+        stroke-width="0.8"></path>
+    </pattern>
+    <radialGradient id={`${uid}-glow`} cx={`${cx}%`} cy={`${cy}%`} r="60%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.32"></stop>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+
+  <rect width="400" height="225" fill={`url(#${uid}-bg)`}></rect>
+  <rect width="400" height="225" fill={`url(#${uid}-grid)`}></rect>
+  <rect width="400" height="225" fill={`url(#${uid}-glow)`}></rect>
+
+  <!-- Formas geométricas derivadas del hash -->
+  <g
+    transform={`translate(${cx * 4} ${cy * 2.25}) rotate(${rotation})`}
+    opacity="0.55"
+  >
+    <circle
+      r={ringR * 2}
+      fill="none"
+      stroke={`url(#${uid}-stroke)`}
+      stroke-width="1.2"></circle>
+    <circle
+      r={ringR * 3}
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-opacity="0.45"
+      stroke-width="0.8"
+      stroke-dasharray="5 7"></circle>
+    <rect
+      x={-ringR}
+      y={-ringR}
+      width={ringR * 2}
+      height={ringR * 2}
+      fill="none"
+      stroke="#ff2fd6"
+      stroke-opacity="0.5"
+      stroke-width="1"
+      transform="rotate(45)"></rect>
+  </g>
+
+  <!-- Barras tipo ecualizador, cantidad según el hash -->
+  <g opacity="0.6">
+    {
+      Array.from({ length: barCount }).map((_, i) => {
+        const h = 8 + ((hash >>> (i + 2)) % 46);
+        return (
+          <rect
+            x={24 + i * 15}
+            y={201 - h}
+            width="5"
+            height={h}
+            fill={i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#ff2fd6' : '#8b5cf6'}
+            opacity="0.75"
+          />
+        );
+      })
+    }
+  </g>
+
+  <!-- Inicial -->
+  <text
+    x="330"
+    y="150"
+    text-anchor="middle"
+    font-family="Orbitron, Segoe UI, sans-serif"
+    font-size="112"
+    font-weight="900"
+    fill="#00f0ff"
+    opacity="0.16">{initial}</text
+  >
+
+  <!-- Marco de esquinas -->
+  <path
+    d="M8 30 L8 8 L30 8"
+    fill="none"
+    stroke="#00f0ff"
+    stroke-opacity="0.7"
+    stroke-width="1.6"></path>
+  <path
+    d="M392 195 L392 217 L370 217"
+    fill="none"
+    stroke="#ff2fd6"
+    stroke-opacity="0.7"
+    stroke-width="1.6"></path>
+</svg>

@@ -1,0 +1,6 @@
+/* Se carga solo desde <noscript>. Sin JavaScript no hay animaciones de
+   entrada, así que el contenido tiene que estar visible desde el principio. */
+[data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}

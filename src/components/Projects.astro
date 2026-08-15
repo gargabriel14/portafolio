@@ -1,0 +1,186 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCover from './ProjectCover.astro';
+import Icon from './Icon.astro';
+
+const entries = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const categories = [
+  'TODO',
+  ...new Set(entries.map((e) => e.data.category)),
+] as const;
+
+const statusMeta = {
+  live: { label: 'EN PRODUCCIÓN', cls: 'border-cyan text-cyan' },
+  development: { label: 'EN DESARROLLO', cls: 'border-magenta text-magenta' },
+  'pre-launch': { label: 'PRE-LANZAMIENTO', cls: 'border-violet text-violet' },
+} as const;
+---
+
+<section id="proyectos" class="relative px-5 py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl">
+    <div class="sec-head" data-reveal>
+      <span class="sec-num">// 03</span>
+      <h2>PROYECTOS</h2>
+      <span class="sec-line"></span>
+      <span
+        class="font-display text-sm font-bold tracking-[.2em] whitespace-nowrap text-cyan"
+        >[ <span id="proj-count">{String(entries.length).padStart(2, '0')}</span
+        > ]</span
+      >
+    </div>
+
+    <p data-reveal class="mb-8 max-w-2xl text-lg leading-relaxed text-muted">
+      Trabajo real, con su estado real. Lo que está en desarrollo lo digo, y lo
+      que es de un cliente que aún no ha lanzado va sin su nombre.
+    </p>
+
+    <!-- Filtros -->
+    <div
+      data-reveal
+      class="mb-9 flex flex-wrap items-center gap-2.5"
+      role="group"
+      aria-label="Filtrar proyectos por categoría"
+    >
+      {
+        categories.map((cat, i) => (
+          <button
+            type="button"
+            class="chip filter-chip"
+            data-filter={cat}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {cat.toUpperCase()}
+          </button>
+        ))
+      }
+    </div>
+
+    <ul id="proj-grid" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {
+        entries.map((entry, i) => {
+          const s = statusMeta[entry.data.status];
+          return (
+            <li data-reveal data-category={entry.data.category}>
+              <article class="pcard clip-card panel group relative flex h-full flex-col">
+                <div class="relative aspect-video overflow-hidden">
+                  <div class="pcard-cover h-full w-full transition-transform duration-700 group-hover:scale-105">
+                    <ProjectCover title={entry.data.title} seedOffset={i} />
+                  </div>
+                  <div class="pcard-scan pointer-events-none absolute inset-0" />
+                  <span
+                    class:list={[
+                      'absolute top-2.5 left-2.5 border bg-ink/85 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em]',
+                      s.cls,
+                    ]}
+                  >
+                    {s.label}
+                  </span>
+                  {entry.data.ongoing && (
+                    <span class="absolute top-2.5 right-2.5 flex items-center gap-1.5 border border-cyan/50 bg-ink/85 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] text-cyan">
+                      <span class="anim-blink">●</span> ACTIVO
+                    </span>
+                  )}
+                </div>
+
+                <div class="flex flex-1 flex-col p-5">
+                  <h3 class="font-display text-lg leading-tight font-bold tracking-[.06em] text-white">
+                    {entry.data.title}
+                  </h3>
+                  <p class="mt-2.5 flex-1 text-sm leading-relaxed text-muted">
+                    {entry.data.summary}
+                  </p>
+
+                  <ul class="mt-4 flex flex-wrap gap-1.5">
+                    {entry.data.tags.map((t) => (
+                      <li class="chip !px-2 !py-1 !text-[.55rem]">{t}</li>
+                    ))}
+                  </ul>
+
+                  {entry.data.link && (
+                    <a
+                      href={entry.data.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-underline mt-5 inline-flex w-fit items-center gap-2 font-display text-[.62rem] font-bold tracking-[.2em] text-cyan transition-colors hover:text-white"
+                    >
+                      {entry.data.linkLabel ?? 'Ver proyecto'}
+                      <Icon name="external" size={13} />
+                      <span class="sr-only">
+                        (se abre en una pestaña nueva)
+                      </span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <p
+      id="proj-empty"
+      hidden
+      class="mt-12 text-center font-display text-sm tracking-[.2em] text-dim"
+    >
+      SIN RESULTADOS EN ESTA CATEGORÍA
+    </p>
+
+    <p data-reveal class="mt-12 text-center text-sm leading-relaxed text-dim">
+      Hay más trabajo en curso que todavía no está listo para enseñarse. Si
+      quieres ver algo concreto, <a
+        href="#contacto"
+        class="link-underline text-cyan">pregúntame directamente</a
+      >.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pcard {
+    transition:
+      border-color 0.3s,
+      filter 0.35s,
+      transform 0.25s var(--ease-smooth);
+    will-change: transform;
+  }
+  .pcard:hover {
+    border-color: rgb(0 240 255 / 0.55);
+    filter: drop-shadow(0 0 16px rgb(0 240 255 / 0.28))
+      drop-shadow(0 0 42px rgb(255 47 214 / 0.12));
+  }
+  .pcard-scan {
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgb(0 240 255 / 0.28),
+      transparent
+    );
+    transform: translateY(-110%);
+    transition: transform 0.9s var(--ease-smooth);
+    mix-blend-mode: screen;
+  }
+  .group:hover .pcard-scan {
+    transform: translateY(110%);
+  }
+  .filter-chip[aria-pressed='true'] {
+    color: var(--color-ink);
+    border-color: transparent;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-violet));
+    box-shadow: 0 0 18px rgb(0 240 255 / 0.45);
+  }
+  li[hidden] {
+    display: none;
+  }
+</style>
+
+{
+  /* El filtro vive en src/scripts/main.ts, no en un <script> aquí: Astro
+    inlina los scripts pequeños de componente y eso obligaría a abrir la
+    CSP con 'unsafe-inline'. Sin JS la parrilla se ve entera, que es el
+    comportamiento correcto para un buscador. */
+}

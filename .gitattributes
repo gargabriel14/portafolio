@@ -1,0 +1,13 @@
+# Normaliza los saltos de línea: LF en el repositorio, lo que toque en disco.
+# Sin esto, un checkout en Windows y otro en el runner de Linux producen
+# diffs enteros por CRLF y el gate de formato falla sin que nadie tocara nada.
+* text=auto eol=lf
+
+# Binarios: que Git no intente convertir nada.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.woff2 binary
+*.ico binary
