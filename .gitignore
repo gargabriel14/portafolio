@@ -41,3 +41,4 @@ npm-debug.log*
 # retomar el proyecto sin releer el repo entero), pero no los internos.
 graphify-out/.graphify_*
 graphify-out/cost.json
+graphify-out/cache/
