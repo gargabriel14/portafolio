@@ -34,7 +34,7 @@ export const intro = {
   /** Párrafo de apertura. Citable, directo, sin adjetivos que no pueda sostener. */
   lead: 'Desarrollador web freelance con experiencia práctica desde 2020 creando, manteniendo y optimizando sitios web y productos digitales.',
   detail:
-    'Trabajo el frontend y el full-stack: WordPress, JavaScript, TypeScript, PHP, React y Node.js, con SEO técnico y analítica encima. Me incorporo a proyectos y código que ya existen, investigo la solución y la dejo funcionando.',
+    'Trabajo el frontend y el full-stack: WordPress, JavaScript, TypeScript, PHP, React y Node.js, con SEO técnico y analítica encima. Me incorporo a proyectos y código que ya existen, investigo la solución y la dejo operativa.',
 } as const;
 
 export const availability = {
@@ -79,7 +79,7 @@ export const socials: Social[] = [
 export const stats = [
   { value: 2020, suffix: '', label: 'Desde', hint: 'Primer trabajo web' },
   { value: 5, suffix: '+', label: 'Años', hint: 'De experiencia práctica' },
-  { value: 4, suffix: '', label: 'Proyectos', hint: 'Documentados aquí' },
+  { value: 4, suffix: '', label: 'Proyectos', hint: 'En portafolio' },
   { value: 2, suffix: '', label: 'Idiomas', hint: 'Español e inglés' },
 ] as const;
 
@@ -140,13 +140,19 @@ export const skillGroups: SkillGroup[] = [
     items: ['Hosting', 'Dominios', 'DNS', 'Vercel', 'Git', 'GitHub'],
   },
   {
-    title: 'Mobile, datos y diseño',
+    title: 'Mobile y datos',
     accent: 'violet',
     items: [
       'React Native',
       'Excel avanzado',
       'Macros y VBA',
       'Automatizaciones y bots',
+    ],
+  },
+  {
+    title: 'Diseño y herramientas',
+    accent: 'magenta',
+    items: [
       'Figma',
       'Photoshop',
       'Illustrator',
