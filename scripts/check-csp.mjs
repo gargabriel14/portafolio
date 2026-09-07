@@ -8,7 +8,7 @@
  *
  * Uso: node scripts/check-csp.mjs
  */
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -55,6 +55,23 @@ async function htmlFiles(dir) {
     else if (extname(entry.name) === '.html') found.push(full);
   }
   return found;
+}
+
+// Sin dist/ no hay nada que verificar, y el ENOENT crudo de readdir no dice
+// qué hacer. Este aviso sí: el error real de CI era que faltaba el build.
+try {
+  const info = await stat(DIST);
+  if (!info.isDirectory()) throw new Error('no es un directorio');
+} catch {
+  console.error(
+    [
+      `✖ No existe ${DIST}`,
+      '',
+      '  Este script inspecciona el resultado del build.',
+      '  Ejecuta `npm run build` antes de `npm run check:csp`.',
+    ].join('\n'),
+  );
+  process.exit(1);
 }
 
 const policy = await readPolicy();

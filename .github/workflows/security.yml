@@ -56,6 +56,13 @@ jobs:
 
       - run: npm ci
 
+      # check-csp.mjs inspecciona dist/, así que hay que construir primero.
+      # Faltaba este paso y el job moría con un ENOENT sobre dist/: en local
+      # no se notaba porque `npm run verify` pasa antes por test:e2e, que sí
+      # construye.
+      - name: Construir
+        run: npm run build
+
       # vercel.json declara la CSP, pero una CSP que el sitio incumple no
       # protege: el navegador la aplica y la página se rompe. Este paso
       # comprueba que lo construido encaja con lo declarado.

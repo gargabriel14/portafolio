@@ -24,7 +24,8 @@
     "format:check": "prettier --check .",
     "test:e2e": "astro build && playwright test",
     "check:csp": "node scripts/check-csp.mjs",
-    "verify": "npm run check && npm run format:check && npm run test:e2e && npm run check:csp"
+    "verify": "npm run check && npm run format:check && npm run test:e2e && npm run check:csp",
+    "icons": "node scripts/generate-favicons.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",

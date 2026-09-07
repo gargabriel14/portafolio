@@ -73,7 +73,14 @@ const siteSchema = {
     <meta name="theme-color" content="#04010f" />
     <meta name="color-scheme" content="dark" />
 
+    {
+      /* El SVG cubre a los navegadores modernos; los PNG están para iOS y
+        para los clientes que ignoran el favicon vectorial. Se regeneran
+        con `npm run icons` a partir del propio favicon.svg. */
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph -->

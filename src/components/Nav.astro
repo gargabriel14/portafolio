@@ -1,5 +1,6 @@
 ---
 import { identity } from '../data/profile';
+import Logo from './Logo.astro';
 
 const links = [
   { href: '#inicio', label: 'INICIO' },
@@ -22,12 +23,14 @@ const links = [
   >
     <a
       href="#inicio"
-      class="font-display text-base font-black tracking-[.2em] text-white transition-opacity hover:opacity-80"
+      class="flex items-center gap-2.5 font-display text-base font-black tracking-[.2em] text-white transition-opacity hover:opacity-80"
     >
-      <span class="text-cyan">◢</span>
-      {identity.brand.prefix}<span class="text-magenta"
-        >{identity.brand.suffix}</span
-      >
+      <Logo size={24} />
+      <span>
+        {identity.brand.prefix}<span class="text-magenta"
+          >{identity.brand.suffix}</span
+        >
+      </span>
     </a>
 
     <ul class="hidden items-center gap-7 lg:flex">

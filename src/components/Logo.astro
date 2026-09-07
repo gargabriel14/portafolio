@@ -1,0 +1,50 @@
+---
+/**
+ * Marca de Gabriel García: la G bicolor.
+ *
+ * Es la misma letra que el favicon, sin la placa. En la barra de navegación
+ * no hace falta el marco — hay contraste de sobra y el texto de al lado ya
+ * da presencia.
+ *
+ * La lengüeta va en magenta para que la marca lleve los dos colores del
+ * sitio sin recargar el dibujo, y sigue leyéndose como G a 16px.
+ *
+ * Geometría: rejilla de 64, grosor de trazo 12, chaflanes a 45° en las
+ * esquinas superior-izquierda e inferior-derecha, las mismas que usa
+ * `clip-corner` en global.css.
+ */
+interface Props {
+  /** Alto en px. El ancho sale solo, la marca es cuadrada. */
+  size?: number;
+  class?: string;
+  /**
+   * 'brand' usa cyan y magenta fijos. 'mono' hereda el color del texto,
+   * que es lo que se quiere sobre un fondo que cambia o en impresión.
+   */
+  variant?: 'brand' | 'mono';
+}
+
+const { size = 26, class: className = '', variant = 'brand' } = Astro.props;
+
+const CUERPO =
+  'M 4 16 L 16 4 L 60 4 L 60 18 L 48 18 L 48 16 L 20 16 L 18 18 L 18 46 L 20 48 L 46 48 L 46 40 L 34 40 L 34 28 L 60 28 L 60 48 L 48 60 L 16 60 L 4 48 Z';
+/** La lengüeta central: el trazo que convierte una C en una G. */
+const LENGUETA = 'M34 28 H60 V40 H34 Z';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  class={className}
+  role="img"
+  aria-label="Marca de Gabriel García"
+  focusable="false"
+>
+  <path
+    fill={variant === 'brand' ? '#00f0ff' : 'currentColor'}
+    fill-rule="evenodd"
+    d={CUERPO}></path>
+  <path fill={variant === 'brand' ? '#ff2fd6' : 'currentColor'} d={LENGUETA}
+  ></path>
+</svg>

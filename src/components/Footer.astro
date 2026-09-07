@@ -1,6 +1,7 @@
 ---
 import { identity, socials } from '../data/profile';
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -10,11 +11,15 @@ const year = new Date().getFullYear();
     class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-7 sm:flex-row"
   >
     <div class="text-center sm:text-left">
-      <p class="font-display text-sm font-black tracking-[.2em] text-white">
-        <span class="text-cyan">◢</span>
-        {identity.brand.prefix}<span class="text-magenta"
-          >{identity.brand.suffix}</span
-        >
+      <p
+        class="flex items-center justify-center gap-2.5 font-display text-sm font-black tracking-[.2em] text-white sm:justify-start"
+      >
+        <Logo size={20} />
+        <span>
+          {identity.brand.prefix}<span class="text-magenta"
+            >{identity.brand.suffix}</span
+          >
+        </span>
       </p>
       <p class="mt-2 text-sm text-dim">
         © {year}
