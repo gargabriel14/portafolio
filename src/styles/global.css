@@ -11,6 +11,9 @@
 @import '@fontsource/rajdhani/500.css';
 @import '@fontsource/rajdhani/600.css';
 @import '@fontsource/rajdhani/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
 @import 'tailwindcss';
 
 /* ─────────────────────────────────────────────────────────────
@@ -31,6 +34,11 @@
 
   --font-display: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+  /* Mono para etiquetas, metadatos y cifras pequeñas. Orbitron es una
+     tipografía de display: a 10px con mucho tracking se lee peor y hace
+     un trabajo para el que no está hecha. Las dos fichas del catálogo
+     (cyberpunk y developer-tool) meten una mono en la pila por esto. */
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
   --tracking-brand: 0.22em;
   --tracking-wider2: 0.35em;
@@ -74,6 +82,14 @@
     min-height: 100svh;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* El Preflight de Tailwind 4 pone cursor:default en <button>, así que
+     los filtros, el botón de copiar y el menú móvil no mostraban la mano.
+     Es el punto "cursor-pointer on all clickable elements" de la checklist. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
   }
 
   ::selection {
@@ -236,7 +252,7 @@
   /* Etiqueta de tecnología */
   .chip {
     display: inline-block;
-    font-family: var(--font-display);
+    font-family: var(--font-mono);
     font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -285,7 +301,7 @@
     min-width: 0;
   }
   .sec-num {
-    font-family: var(--font-display);
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.3em;

@@ -39,7 +39,7 @@ const accentText = {
               <dt class="flex items-baseline gap-3 sm:w-44">
                 <span
                   class:list={[
-                    'font-display text-[.6rem] font-bold tabular-nums',
+                    'font-mono text-[.68rem] font-bold tabular-nums',
                     accentText[group.accent],
                   ]}
                 >
@@ -91,10 +91,10 @@ const accentText = {
               proficiency.map((p) => (
                 <li>
                   <div class="mb-2 flex items-baseline justify-between gap-3">
-                    <span class="font-display text-[.66rem] font-bold tracking-[.16em] text-text">
+                    <span class="font-mono text-[.7rem] font-bold tracking-[.1em] text-text">
                       {p.label.toUpperCase()}
                     </span>
-                    <span class="font-display text-xs font-bold text-cyan tabular-nums">
+                    <span class="font-mono text-xs font-bold text-cyan tabular-nums">
                       {p.value}%
                     </span>
                   </div>

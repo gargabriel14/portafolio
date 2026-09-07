@@ -136,7 +136,7 @@ const statusMeta = {
 
                   <span
                     class:list={[
-                      'absolute top-3 left-3 border px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] backdrop-blur-sm',
+                      'absolute top-3 left-3 border px-2.5 py-1 font-mono text-[.6rem] font-bold tracking-[.12em] backdrop-blur-sm',
                       s.cls,
                     ]}
                   >
@@ -144,7 +144,7 @@ const statusMeta = {
                   </span>
 
                   {d.ongoing && (
-                    <span class="absolute top-3 right-3 flex items-center gap-1.5 border border-cyan/50 bg-ink/70 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] text-cyan backdrop-blur-sm">
+                    <span class="absolute top-3 right-3 flex items-center gap-1.5 border border-cyan/50 bg-ink/70 px-2.5 py-1 font-mono text-[.6rem] font-bold tracking-[.12em] text-cyan backdrop-blur-sm">
                       <span class="anim-blink">●</span> ACTIVO
                     </span>
                   )}
@@ -185,7 +185,7 @@ const statusMeta = {
                       href={d.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="link-underline mt-5 inline-flex w-fit items-center gap-2 font-display text-[.62rem] font-bold tracking-[.2em] text-cyan transition-colors hover:text-white"
+                      class="link-underline mt-5 inline-flex w-fit items-center gap-2 font-mono text-[.68rem] font-bold tracking-[.12em] text-cyan transition-colors hover:text-white"
                     >
                       {d.linkLabel ?? 'Ver proyecto'}
                       <Icon name="external" size={13} />
@@ -205,7 +205,7 @@ const statusMeta = {
     <p
       id="proj-empty"
       hidden
-      class="mt-12 text-center font-display text-sm tracking-[.2em] text-dim"
+      class="mt-12 text-center font-mono text-sm tracking-[.12em] text-dim"
     >
       SIN RESULTADOS EN ESTA CATEGORÍA
     </p>
