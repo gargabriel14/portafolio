@@ -31,6 +31,20 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      /**
+       * Las fuentes NUNCA se inlinan como data: URI.
+       *
+       * Vite inlina por defecto todo asset por debajo de 4 KB, y varios
+       * subconjuntos de JetBrains Mono caen ahí. Un `data:font/woff2` viola
+       * `font-src 'self'` de la CSP, así que el navegador los bloquea y esos
+       * subconjuntos no llegan a cargar — silenciosamente, salvo por un
+       * error en consola. La alternativa era abrir la CSP con `data:`;
+       * prefiero servirlas como archivos y dejar la política cerrada.
+       */
+      assetsInlineLimit: (filePath) =>
+        /\.(woff2?|ttf|otf|eot)$/i.test(filePath) ? false : undefined,
+    },
     // three.js es el bulto pesado del sitio, pero no hace falta configurar
     // el troceado a mano: scene.ts entra por import() dinámico, así que
     // Rolldown ya lo emite como chunk aparte que solo se descarga cuando

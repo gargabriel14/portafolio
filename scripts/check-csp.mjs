@@ -37,6 +37,16 @@ async function readPolicy() {
   );
 }
 
+async function filesWithExt(dir, ext) {
+  const found = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) found.push(...(await filesWithExt(full, ext)));
+    else if (extname(entry.name) === ext) found.push(full);
+  }
+  return found;
+}
+
 async function htmlFiles(dir) {
   const found = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -112,7 +122,49 @@ for (const file of await htmlFiles(DIST)) {
   }
 }
 
-// 5. La política tiene que traer los cierres mínimos.
+/*
+ * 5. El CSS construido, contra font-src e img-src.
+ *
+ * Esto existe por un fallo real: Vite inlina por defecto todo asset menor
+ * de 4 KB, varios subconjuntos de JetBrains Mono caían ahí, y un
+ * `data:font/woff2` viola `font-src 'self'`. El navegador los bloqueaba y
+ * la única señal era un error en consola que este script no miraba, porque
+ * solo revisaba el HTML. Nueve violaciones llegaron a producción así.
+ */
+const fontSrc = policy['font-src'] ?? policy['default-src'] ?? [];
+const imgSrc = policy['img-src'] ?? policy['default-src'] ?? [];
+
+for (const file of await filesWithExt(DIST, '.css')) {
+  const css = await readFile(file, 'utf8');
+  const name = file.slice(DIST.length + 1);
+
+  if (!fontSrc.includes('data:')) {
+    const dataFonts =
+      css.match(/url\(\s*["']?data:(?:application\/)?font/gi) ?? [];
+    const woffData = css.match(/url\(\s*["']?data:[^)"']*woff/gi) ?? [];
+    const total = dataFonts.length + woffData.length;
+    if (total > 0) {
+      problems.push(
+        `${name}: ${total} fuente(s) en data: URI, y font-src no permite data: — el navegador las bloquea`,
+      );
+    }
+  }
+
+  if (!imgSrc.includes('data:')) {
+    const dataImgs = css.match(/url\(\s*["']?data:image/gi) ?? [];
+    if (dataImgs.length > 0) {
+      problems.push(
+        `${name}: ${dataImgs.length} imagen(es) en data: URI, y img-src no permite data:`,
+      );
+    }
+  }
+
+  for (const m of css.matchAll(/url\(\s*["']?(https?:\/\/[^)"']+)/gi)) {
+    problems.push(`${name}: recurso externo en CSS desde ${m[1]}`);
+  }
+}
+
+// 6. La política tiene que traer los cierres mínimos.
 for (const [directive, expected] of [
   ['object-src', "'none'"],
   ['frame-ancestors', "'none'"],
@@ -133,5 +185,5 @@ if (problems.length > 0) {
 }
 
 console.log(
-  `✔ CSP verificada: script-src ${scriptSrc.join(' ') || '(hereda default-src)'} — sin scripts inline, sin manejadores en atributos, sin recursos externos.`,
+  `✔ CSP verificada: script-src ${scriptSrc.join(' ') || '(hereda default-src)'}, font-src ${fontSrc.join(' ') || '(hereda)'} — sin scripts inline, sin manejadores en atributos, sin recursos externos y sin fuentes en data: URI.`,
 );
