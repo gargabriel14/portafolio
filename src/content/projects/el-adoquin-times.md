@@ -1,10 +1,13 @@
 ---
 title: 'El Adoquín Times'
 category: 'Web'
-summary: 'Plataforma digital de un medio de comunicación: desarrollo, mantenimiento y evolución continua desde 2020.'
+summary: 'Periódico digital de cultura puertorriqueña. Publica a diario y llevo desde 2020 sosteniéndolo.'
 status: 'live'
 ongoing: true
 order: 1
+featured: true
+cover: 'adoquin.png'
+coverAlt: 'Portada de El Adoquín Times: cabecera del periódico, menú de secciones y titulares del día.'
 tags:
   - WordPress
   - PHP
@@ -17,18 +20,16 @@ link: 'https://eladoquintimes.com'
 linkLabel: 'Ver sitio'
 ---
 
-El proyecto más largo de mi trayectoria y el que mejor explica cómo trabajo: llevo desde
-noviembre de 2020 desarrollando, manteniendo y haciendo evolucionar la plataforma.
+Es el proyecto más largo que tengo y el que mejor explica cómo trabajo.
 
-No fue un encargo que se entrega y se cierra. Es un sitio vivo, con contenido publicándose
-a diario, en el que cada cambio tiene que entrar sin romper lo que ya funciona.
+Un periódico no se entrega y se cierra. Se publica todos los días, y eso cambia
+las reglas: cada cambio que meto tiene que entrar sin romper lo que ya está
+funcionando, con redacción trabajando al otro lado. No hay ventana de
+mantenimiento cómoda.
 
-**Lo que hago aquí:**
+En estos años he tocado casi todo: themes y child themes, plugins, campos ACF,
+maquetación con Elementor donde compensa y a mano donde Elementor se queda
+corto. También lo que no se ve — hosting, dominios, DNS, despliegues — y el SEO
+técnico y On-Page, siguiéndolo en Search Console y GA4.
 
-- Desarrollo y personalización de themes, child themes, plugins y campos ACF.
-- Maquetación con Elementor combinada con desarrollo manual donde Elementor no llega.
-- Implementación de funcionalidades nuevas y resolución de incidencias técnicas.
-- Responsive design y optimización de la experiencia de lectura.
-- SEO técnico y On-Page, con seguimiento en Google Search Console y GA4.
-- Administración de hosting, dominios, DNS y despliegues.
-- Participación en un rebranding y en una optimización general reciente.
+Participé en el rebranding y en la optimización general reciente.

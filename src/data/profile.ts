@@ -152,11 +152,7 @@ export const skillGroups: SkillGroup[] = [
   {
     title: 'Diseño y herramientas',
     accent: 'magenta',
-    items: [
-      'Figma',
-      'Photoshop',
-      'Illustrator',
-    ],
+    items: ['Figma', 'Photoshop', 'Illustrator'],
   },
 ];
 

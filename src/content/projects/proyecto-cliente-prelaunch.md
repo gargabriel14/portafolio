@@ -1,23 +1,27 @@
 ---
-title: 'Proyecto web de cliente'
+title: 'Web para una asesoría migratoria'
 category: 'Web'
-summary: 'Sitio desarrollado para un cliente, pendiente de publicación oficial. Frontend, maquetación y responsive design.'
+summary: 'Sitio de una asesoría de movilidad internacional: convertir un trámite que asusta en una ruta que se entiende.'
 status: 'pre-launch'
-order: 3
+order: 2
+cover: 'multiverso.png'
+coverAlt: 'Portada del sitio de asesoría migratoria: titular editorial, tarjeta de expediente y datos de servicio.'
 tags:
   - Frontend
   - Responsive Design
   - Maquetación
   - Vercel
-link: 'https://pagina-d37v4spyy-gabriel-garcia.vercel.app/'
-linkLabel: 'Vista provisional'
+link: 'https://pagina-web-orcin.vercel.app'
+linkLabel: 'Ver la web'
 ---
 
-Proyecto web encargado por un cliente y todavía **pendiente de lanzamiento oficial**.
+Encargo de un cliente del sector legal, todavía **pendiente de lanzamiento
+oficial**. Por acuerdo con él no doy su nombre hasta que salga.
 
-Por acuerdo con el cliente no publico su nombre ni detalles del encargo hasta que el sitio
-salga. Lo que sí puedo mostrar es el trabajo: desarrollo frontend, maquetación y
-responsive design, desplegado en Vercel.
+El problema no era técnico, era de nervios. Quien busca asesoría migratoria
+llega con miedo a equivocarse y con prisa. La web tenía que bajar esa tensión
+antes de pedir nada: primero se explica la ruta, después se ofrece el contacto.
 
-El enlace es una **vista provisional del despliegue**, no la web definitiva ni la URL
-final del cliente.
+Frontend, maquetación y responsive, desplegado en Vercel. Es de los proyectos
+donde más he trabajado la jerarquía tipográfica: hay mucho texto que leer y
+tenía que entrar sin pesar.

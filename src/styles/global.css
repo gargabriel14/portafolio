@@ -415,6 +415,36 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   GRANO
+   Una capa de ruido finísima sobre todo el sitio. Es el truco más
+   barato que hay contra el aspecto "vector plano recién generado":
+   los degradados dejan de verse matemáticamente limpios y la
+   pantalla gana algo de textura, como papel impreso.
+
+   Va como data URI, no como archivo: cabe en la CSP (img-src
+   permite data:) y no añade una petición.
+   ───────────────────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* En pantallas pequeñas el grano compite con el texto y cuesta
+   batería de composición: se baja, no se quita. */
+@media (max-width: 640px) {
+  body::after {
+    opacity: 0.24;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    ACCESIBILIDAD · quien pide menos movimiento recibe menos
    movimiento. No es un modo degradado: el sitio queda completo.
    ───────────────────────────────────────────────────────────── */

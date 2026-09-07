@@ -84,7 +84,23 @@ npm run verify       # el gate completo: tipos, formato, build, e2e, CSP
    muestrea el ancho en el tiempo para cazar exactamente esto.
 
 7. **Astro colapsa el espacio en blanco** entre una expresión `{}` y un
-   elemento adyacente. Usa `{' '}` explícito o saldrá "Alcedo,desarrollador".
+   elemento adyacente, y Prettier junta elementos hermanos al reformatear.
+   Usa `{' '}` explícito o saldrá "Alcedo,desarrollador" — y en un `h1`
+   partido en varias líneas, "GABRIELGARCÍA" de una pieza para el lector de
+   pantalla y para el buscador.
+
+8. **Una lista separada por puntos necesita espacios de verdad.** Con el
+   separador pegado (`item·item`) y cada elemento en `whitespace-nowrap`, el
+   navegador no encuentra ni un punto de corte y el ancho mínimo del bloque
+   se dispara — en la ficha de "Stack" llegó a 683 px y arrastraba scroll
+   horizontal en móvil. El separador va como `{' · '}`, con espacios.
+
+9. **Si un componente publica un `id` que lee `main.ts`, va en sus props.**
+   Al extraer la cabecera de sección a `SectionHead` se perdió
+   `id="proj-count"`, y como el filtro hacía `return` temprano al no
+   encontrarlo, dejó de funcionar entero y en silencio. Los adornos
+   (contador, aviso de vacío) no pueden compartir guarda con la
+   funcionalidad.
 
 ## Estructura
 

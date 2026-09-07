@@ -1,22 +1,24 @@
 ---
 title: 'App de El Adoquín Times'
 category: 'App'
-summary: 'Aplicación móvil vinculada al medio, actualmente en desarrollo activo.'
+summary: 'Llevar el periódico al móvil como app propia. Está a medias, y lo digo.'
 status: 'development'
 ongoing: true
-order: 2
+order: 3
+cover: 'app.png'
+coverAlt: 'Ilustración del estado de desarrollo de la app: pantalla de móvil con la maqueta en curso.'
 tags:
   - JavaScript
   - React
   - React Native
 ---
 
-Extensión natural del trabajo en la plataforma web: llevar el medio al móvil como
-aplicación propia en lugar de depender solo del navegador.
+La continuación natural del trabajo en la web: que el periódico tenga app
+propia en vez de depender del navegador.
 
-Está **en desarrollo**. Lo digo tal cual porque presentar como terminado algo que no lo
-está es la forma más rápida de perder la confianza de quien te contrata.
+Sigue **en desarrollo**. Lo pongo así de claro porque enseñar como terminado
+algo que no lo está es la forma más rápida de que alguien deje de fiarse de ti,
+y prefiero que me juzgues por lo que sí puedo enseñar.
 
-**Tecnologías involucradas:** JavaScript, React y React Native.
-
-Cuando esté publicada, este bloque se actualiza con el enlace a la tienda.
+Va con JavaScript, React y React Native. Cuando se publique, aquí estará el
+enlace a la tienda.

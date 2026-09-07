@@ -322,12 +322,19 @@ function initPointerEffects() {
    ══════════════════════════════════════════════════════════ */
 function initProjectFilter() {
   const grid = document.getElementById('proj-grid');
+  if (!grid) return;
+
+  // El contador y el aviso de "sin resultados" son adornos. Antes estaban en
+  // la misma guarda que la parrilla, así que al mover la cabecera a otro
+  // componente y perderse el id del contador, el filtro entero dejó de
+  // conectarse en silencio. Que falte uno no puede desactivar la función.
   const counter = document.getElementById('proj-count');
   const empty = document.getElementById('proj-empty');
-  if (!grid || !counter || !empty) return;
 
   const chips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
-  const cards = Array.from(grid.querySelectorAll<HTMLLIElement>('li'));
+  // :scope > li y no 'li' a secas: dentro de cada tarjeta hay una lista de
+  // etiquetas, y sin acotar el selector el filtro también las escondía.
+  const cards = Array.from(grid.querySelectorAll<HTMLLIElement>(':scope > li'));
 
   const apply = (filter: string) => {
     let visible = 0;
@@ -336,8 +343,8 @@ function initProjectFilter() {
       card.hidden = !show;
       if (show) visible++;
     }
-    counter.textContent = String(visible).padStart(2, '0');
-    empty.hidden = visible !== 0;
+    if (counter) counter.textContent = String(visible).padStart(2, '0');
+    if (empty) empty.hidden = visible !== 0;
     ScrollTrigger.refresh();
   };
 

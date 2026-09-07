@@ -1,0 +1,82 @@
+---
+/**
+ * Cabecera de sección.
+ *
+ * Antes cada sección repetía el mismo bloque "// 0N — TÍTULO — raya" cinco
+ * veces seguidas. Leído del tirón, ese patrón idéntico es justo lo que hace
+ * que una web parezca generada: no hay una sola decisión distinta entre una
+ * sección y la siguiente.
+ *
+ * La `note` es la que rompe la repetición. Es una frase corta, en primera
+ * persona, distinta en cada sección — el sitio para de recitar apartados y
+ * empieza a hablar.
+ */
+interface Props {
+  num: string;
+  title: string;
+  /** Frase con voz propia. Es lo que evita que las cinco cabeceras sean clones. */
+  note?: string;
+  /** Contador opcional a la derecha, p. ej. el número de proyectos. */
+  count?: string;
+  /** id del contador. Lo necesita main.ts para actualizarlo al filtrar. */
+  countId?: string;
+  align?: 'left' | 'center';
+}
+
+const { num, title, note, count, countId, align = 'left' } = Astro.props;
+---
+
+<header
+  data-reveal
+  class:list={[
+    'mb-9 sm:mb-11',
+    align === 'center' && 'flex flex-col items-center text-center',
+  ]}
+>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <span
+      class="font-display text-[.7rem] font-bold tracking-[.3em] text-magenta"
+      style="text-shadow:0 0 12px rgb(255 47 214/.7)"
+    >
+      // {num}
+    </span>
+
+    <h2
+      class="font-display text-[clamp(1.6rem,5vw,2.9rem)] leading-[0.95] font-black tracking-[.06em] text-white"
+      style="text-shadow:0 0 22px rgb(0 240 255/.35)"
+    >
+      {title}
+    </h2>
+
+    {
+      count && (
+        <span class="ml-auto font-display text-sm font-bold tracking-[.2em] text-cyan">
+          [ <span id={countId}>{count}</span> ]
+        </span>
+      )
+    }
+  </div>
+
+  {
+    note && (
+      <p
+        class:list={[
+          'mt-3 max-w-xl text-base leading-relaxed text-dim sm:text-[1.05rem]',
+          align === 'center' && 'mx-auto',
+        ]}
+      >
+        {note}
+      </p>
+    )
+  }
+
+  <div
+    aria-hidden="true"
+    class:list={[
+      'mt-6 h-px',
+      align === 'center' ? 'w-24' : 'w-full max-w-[220px]',
+    ]}
+    style="background:linear-gradient(90deg,var(--color-cyan),var(--color-magenta),transparent);box-shadow:0 0 10px rgb(0 240 255/.5)"
+  >
+  </div>
+</header>

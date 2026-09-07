@@ -1,5 +1,6 @@
 ---
 import { timeline } from '../data/profile';
+import SectionHead from './SectionHead.astro';
 
 const accent = {
   cyan: { text: 'text-cyan', border: 'border-cyan', bg: 'bg-cyan' },
@@ -11,11 +12,11 @@ const accent = {
 
 <section id="trayectoria" class="relative px-5 py-24 sm:py-28">
   <div class="mx-auto max-w-4xl">
-    <div class="sec-head" data-reveal>
-      <span class="sec-num">// 04</span>
-      <h2>TRAYECTORIA</h2>
-      <span class="sec-line"></span>
-    </div>
+    <SectionHead
+      num="04"
+      title="TRAYECTORIA"
+      note="Empecé en 2020 y no he parado. Dos trabajos largos se solapan aquí porque de verdad se solaparon."
+    />
 
     <ol class="relative space-y-10 pl-8 sm:pl-10">
       <!-- Raíl vertical -->

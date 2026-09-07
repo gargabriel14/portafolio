@@ -1,7 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import ProjectCover from './ProjectCover.astro';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
+
+/**
+ * Las portadas se resuelven aquí y no en el frontmatter porque Astro necesita
+ * un import estático para optimizar la imagen. El .md guarda solo el nombre
+ * del archivo y este glob lo convierte en su ImageMetadata.
+ */
+const covers = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/projects/*.{png,jpg,jpeg,webp}',
+  { eager: true },
+);
 
 const entries = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
@@ -13,34 +26,31 @@ const categories = [
 ] as const;
 
 const statusMeta = {
-  live: { label: 'EN PRODUCCIÓN', cls: 'border-cyan text-cyan' },
-  development: { label: 'EN DESARROLLO', cls: 'border-magenta text-magenta' },
-  'pre-launch': { label: 'PRE-LANZAMIENTO', cls: 'border-violet text-violet' },
+  live: { label: 'EN PRODUCCIÓN', cls: 'border-cyan/60 bg-cyan/10 text-cyan' },
+  development: {
+    label: 'EN DESARROLLO',
+    cls: 'border-magenta/60 bg-magenta/10 text-magenta',
+  },
+  'pre-launch': {
+    label: 'PRE-LANZAMIENTO',
+    cls: 'border-violet/60 bg-violet/10 text-violet',
+  },
 } as const;
 ---
 
-<section id="proyectos" class="relative px-5 py-24 sm:py-28">
+<section id="proyectos" class="relative overflow-hidden px-5 py-24 sm:py-28">
   <div class="mx-auto max-w-7xl">
-    <div class="sec-head" data-reveal>
-      <span class="sec-num">// 03</span>
-      <h2>PROYECTOS</h2>
-      <span class="sec-line"></span>
-      <span
-        class="font-display text-sm font-bold tracking-[.2em] whitespace-nowrap text-cyan"
-        >[ <span id="proj-count">{String(entries.length).padStart(2, '0')}</span
-        > ]</span
-      >
-    </div>
+    <SectionHead
+      num="03"
+      title="PROYECTOS"
+      note="Cuatro, con su estado real y no con el que me gustaría. Uno está a medias y lo verás dicho en su tarjeta."
+      count={String(entries.length).padStart(2, '0')}
+      countId="proj-count"
+    />
 
-    <p data-reveal class="mb-8 max-w-2xl text-lg leading-relaxed text-muted">
-      Trabajo real, con su estado real. Lo que está en desarrollo lo digo, y lo
-      que es de un cliente que aún no ha lanzado va sin su nombre.
-    </p>
-
-    <!-- Filtros -->
     <div
       data-reveal
-      class="mb-9 flex flex-wrap items-center gap-2.5"
+      class="mb-10 flex flex-wrap items-center gap-2.5"
       role="group"
       aria-label="Filtrar proyectos por categoría"
     >
@@ -61,52 +71,123 @@ const statusMeta = {
     <ul id="proj-grid" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {
         entries.map((entry, i) => {
-          const s = statusMeta[entry.data.status];
+          const d = entry.data;
+          const s = statusMeta[d.status];
+          const img = d.cover
+            ? covers[`/src/assets/projects/${d.cover}`]?.default
+            : undefined;
+
           return (
-            <li data-reveal data-category={entry.data.category}>
-              <article class="pcard clip-card panel group relative flex h-full flex-col">
-                <div class="relative aspect-video overflow-hidden">
-                  <div class="pcard-cover h-full w-full transition-transform duration-700 group-hover:scale-105">
-                    <ProjectCover title={entry.data.title} seedOffset={i} />
-                  </div>
+            <li
+              data-reveal
+              data-category={d.category}
+              class:list={[d.featured && 'sm:col-span-2']}
+            >
+              {/* El destacado se reparte en dos columnas internas en vez de
+                  apilar imagen sobre texto: a doble ancho, una portada 16:9
+                  encima del texto estiraba toda la fila y dejaba un hueco
+                  muerto en la tarjeta vecina. */}
+              <article
+                class:list={[
+                  'pcard clip-card panel group relative flex h-full',
+                  d.featured ? 'flex-col sm:flex-row' : 'flex-col',
+                ]}
+              >
+                <div
+                  class:list={[
+                    'relative overflow-hidden',
+                    d.featured
+                      ? 'aspect-video sm:aspect-auto sm:w-[54%] sm:shrink-0'
+                      : 'aspect-video',
+                  ]}
+                >
+                  {img ? (
+                    <Image
+                      src={img}
+                      alt={d.coverAlt ?? `Captura del proyecto ${d.title}`}
+                      widths={[420, 840, 1260]}
+                      sizes="(max-width:640px) 100vw, (max-width:1280px) 50vw, 33vw"
+                      format="webp"
+                      quality={78}
+                      loading={i < 2 ? 'eager' : 'lazy'}
+                      class:list={[
+                        'h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]',
+                        d.featured ? 'object-left-top' : 'object-top',
+                      ]}
+                    />
+                  ) : (
+                    <div class="h-full w-full transition-transform duration-[900ms] group-hover:scale-[1.04]">
+                      <ProjectCover title={d.title} seedOffset={i} />
+                    </div>
+                  )}
+
+                  {/* Sin este degradado, los títulos claros de una captura
+                      real chocan con el borde de la tarjeta. */}
+                  <div
+                    aria-hidden="true"
+                    class="pointer-events-none absolute inset-0"
+                    style={
+                      d.featured
+                        ? 'background:linear-gradient(180deg,rgb(4 1 15/.38) 0%,transparent 30%,transparent 70%,rgb(4 1 15/.5) 100%)'
+                        : 'background:linear-gradient(180deg,rgb(4 1 15/.40) 0%,transparent 32%,transparent 60%,rgb(4 1 15/.80) 100%)'
+                    }
+                  />
                   <div class="pcard-scan pointer-events-none absolute inset-0" />
+
                   <span
                     class:list={[
-                      'absolute top-2.5 left-2.5 border bg-ink/85 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em]',
+                      'absolute top-3 left-3 border px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] backdrop-blur-sm',
                       s.cls,
                     ]}
                   >
                     {s.label}
                   </span>
-                  {entry.data.ongoing && (
-                    <span class="absolute top-2.5 right-2.5 flex items-center gap-1.5 border border-cyan/50 bg-ink/85 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] text-cyan">
+
+                  {d.ongoing && (
+                    <span class="absolute top-3 right-3 flex items-center gap-1.5 border border-cyan/50 bg-ink/70 px-2.5 py-1 font-display text-[.55rem] font-bold tracking-[.18em] text-cyan backdrop-blur-sm">
                       <span class="anim-blink">●</span> ACTIVO
                     </span>
                   )}
                 </div>
 
-                <div class="flex flex-1 flex-col p-5">
-                  <h3 class="font-display text-lg leading-tight font-bold tracking-[.06em] text-white">
-                    {entry.data.title}
+                <div
+                  class:list={[
+                    'flex flex-1 flex-col p-5',
+                    d.featured && 'sm:justify-center sm:p-7',
+                  ]}
+                >
+                  <h3
+                    class:list={[
+                      'font-display leading-tight font-bold tracking-[.05em] text-white',
+                      d.featured ? 'text-xl sm:text-2xl' : 'text-lg',
+                    ]}
+                  >
+                    {d.title}
                   </h3>
-                  <p class="mt-2.5 flex-1 text-sm leading-relaxed text-muted">
-                    {entry.data.summary}
+
+                  <p
+                    class:list={[
+                      'mt-2.5 leading-relaxed text-muted',
+                      d.featured ? 'text-base sm:text-lg' : 'flex-1 text-sm',
+                    ]}
+                  >
+                    {d.summary}
                   </p>
 
                   <ul class="mt-4 flex flex-wrap gap-1.5">
-                    {entry.data.tags.map((t) => (
+                    {d.tags.map((t) => (
                       <li class="chip !px-2 !py-1 !text-[.55rem]">{t}</li>
                     ))}
                   </ul>
 
-                  {entry.data.link && (
+                  {d.link && (
                     <a
-                      href={entry.data.link}
+                      href={d.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       class="link-underline mt-5 inline-flex w-fit items-center gap-2 font-display text-[.62rem] font-bold tracking-[.2em] text-cyan transition-colors hover:text-white"
                     >
-                      {entry.data.linkLabel ?? 'Ver proyecto'}
+                      {d.linkLabel ?? 'Ver proyecto'}
                       <Icon name="external" size={13} />
                       <span class="sr-only">
                         (se abre en una pestaña nueva)
@@ -129,11 +210,10 @@ const statusMeta = {
       SIN RESULTADOS EN ESTA CATEGORÍA
     </p>
 
-    <p data-reveal class="mt-12 text-center text-sm leading-relaxed text-dim">
-      Hay más trabajo en curso que todavía no está listo para enseñarse. Si
-      quieres ver algo concreto, <a
-        href="#contacto"
-        class="link-underline text-cyan">pregúntame directamente</a
+    <p data-reveal class="mt-12 max-w-xl text-sm leading-relaxed text-dim">
+      Hay más cosas en marcha que todavía no están para enseñarse. Si quieres
+      ver algo concreto, <a href="#contacto" class="link-underline text-cyan"
+        >pregúntame y te lo cuento</a
       >.
     </p>
   </div>
@@ -156,7 +236,7 @@ const statusMeta = {
     background: linear-gradient(
       180deg,
       transparent,
-      rgb(0 240 255 / 0.28),
+      rgb(0 240 255 / 0.24),
       transparent
     );
     transform: translateY(-110%);

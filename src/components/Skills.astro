@@ -1,56 +1,89 @@
 ---
 import { skillGroups, proficiency } from '../data/profile';
+import SectionHead from './SectionHead.astro';
 
-const accentClass = {
-  cyan: 'text-cyan border-cyan/30',
-  magenta: 'text-magenta border-magenta/30',
-  violet: 'text-violet border-violet/30',
+const accentText = {
+  cyan: 'text-cyan',
+  magenta: 'text-magenta',
+  violet: 'text-violet',
 } as const;
 ---
 
+{
+  /* Antes esta sección eran seis muros de píldoras idénticas, una debajo de
+    otra. Ese patrón — rejilla de chips todos iguales — es de los que más
+    delatan una plantilla: no hay jerarquía, todo pesa lo mismo y nada dice
+    qué importa más.
+
+    Ahora se lee como una ficha técnica: cada bloque numerado, las
+    tecnologías como texto separado por puntos, y una línea de guía que
+    lleva el ojo. Es la misma información con una lectura distinta. */
+}
 <section id="skills" class="relative px-5 py-24 sm:py-28">
   <div class="mx-auto max-w-6xl">
-    <div class="sec-head" data-reveal>
-      <span class="sec-num">// 02</span>
-      <h2>STACK TÉCNICO</h2>
-      <span class="sec-line"></span>
-    </div>
+    <SectionHead
+      num="02"
+      title="STACK TÉCNICO"
+      note="Lo que uso de verdad. No he puesto nada que no haya tocado en un proyecto real."
+    />
 
-    <div class="grid gap-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-      <!-- Grupos de tecnologías -->
-      <div class="space-y-7">
+    <div class="grid gap-14 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+      <!-- Ficha técnica -->
+      <dl class="min-w-0 border-t border-cyan/15">
         {
-          skillGroups.map((group) => (
-            <div data-reveal>
-              <h3
-                class:list={[
-                  'mb-3.5 border-l-2 pl-3 font-display text-[.68rem] font-bold tracking-[.26em]',
-                  accentClass[group.accent],
-                ]}
-              >
-                {group.title.toUpperCase()}
-              </h3>
-              <ul class="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <li class="chip">{item}</li>
+          skillGroups.map((group, i) => (
+            <div
+              data-reveal
+              class="grid min-w-0 gap-x-6 gap-y-2 border-b border-cyan/15 py-5 sm:grid-cols-[auto_1fr] sm:py-6"
+            >
+              <dt class="flex items-baseline gap-3 sm:w-44">
+                <span
+                  class:list={[
+                    'font-display text-[.6rem] font-bold tabular-nums',
+                    accentText[group.accent],
+                  ]}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="font-display text-[.68rem] leading-tight font-bold tracking-[.2em] text-white">
+                  {group.title.toUpperCase()}
+                </span>
+              </dt>
+
+              {/* Los separadores llevan espacios REALES a los lados. Con el
+                  punto pegado al texto y cada tecnología en whitespace-nowrap,
+                  el navegador no encontraba ni un punto de corte en toda la
+                  línea: el ancho mínimo se disparaba a 683px y arrastraba
+                  scroll horizontal en móvil. */}
+              <dd class="min-w-0 text-[1.02rem] leading-relaxed text-muted">
+                {group.items.map((item, j) => (
+                  <>
+                    {j > 0 && (
+                      <span aria-hidden="true" class="text-dim/60">
+                        {' · '}
+                      </span>
+                    )}
+                    <span class="whitespace-nowrap">{item}</span>
+                  </>
                 ))}
-              </ul>
+              </dd>
             </div>
           ))
         }
-      </div>
+      </dl>
 
-      <!-- Barras de nivel -->
-      <div data-reveal class="lg:sticky lg:top-24">
+      <!-- Nivel por área -->
+      <div data-reveal class="lg:sticky lg:top-24 lg:self-start">
         <div class="panel clip-card p-6 sm:p-7">
           <h3
             class="font-display text-[.68rem] font-bold tracking-[.26em] text-white"
           >
-            NIVEL POR ÁREA
+            DÓNDE VOY SOLO
           </h3>
-          <p class="mt-2 text-sm leading-relaxed text-dim">
-            Autoevaluación sobre trabajo real, no una métrica medida. Está aquí
-            para que sepas dónde puedo ir solo y dónde voy a preguntar.
+          <p class="mt-2.5 text-sm leading-relaxed text-dim">
+            Es mi propia valoración, no una nota de examen. Está aquí para que
+            sepas dónde tiro sin ayuda y dónde voy a preguntar antes de tocar
+            nada.
           </p>
 
           <ul class="mt-7 space-y-6">

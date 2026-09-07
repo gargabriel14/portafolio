@@ -22,8 +22,18 @@ const projects = defineCollection({
     link: z.string().url().optional(),
     /** Texto del botón, para no decir "Ver sitio" sobre algo sin publicar. */
     linkLabel: z.string().optional(),
-    /** Imagen de portada opcional en /public. Sin ella se dibuja una portada generativa. */
+    /**
+     * Nombre del archivo dentro de src/assets/projects/. Se resuelve en
+     * Projects.astro contra un import.meta.glob, así que Astro lo optimiza
+     * y le pone hash. Sin portada se dibuja una generativa a partir del
+     * título, que es el respaldo para un proyecto que aún no tiene qué
+     * enseñar.
+     */
     cover: z.string().optional(),
+    /** Texto alternativo de la portada. Obligatorio si hay portada. */
+    coverAlt: z.string().optional(),
+    /** El destacado ocupa el doble de ancho y abre la parrilla. Solo uno. */
+    featured: z.boolean().default(false),
     /** Orden de aparición, menor primero. */
     order: z.number(),
     /** Se marca cuando el trabajo es continuado y sigue vivo. */
